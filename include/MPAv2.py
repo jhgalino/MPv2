@@ -1,3 +1,6 @@
+import copy
+
+
 class RelationshipCircle:
     def __init__(self, listOfNames: list, centerScore: int, size: int):
         self.listOfNames = listOfNames
@@ -12,7 +15,7 @@ class RelationshipCircle:
 
     def sortByDistance(self):
         self.listOfNames = sorted(self.listOfNames, key=lambda x: x[2])
-        print(self.listOfNames)
+        # print(self.listOfNames)
 
     def sortByScore(self):
         for n in range(1, len(self.listOfNames)):
@@ -32,7 +35,7 @@ class RelationshipCircle:
                         break
                 else:
                     break
-        print(self.listOfNames)
+        # print(self.listOfNames)
 
     def sortByName(self):
         for n in range(1, len(self.listOfNames)):
@@ -62,7 +65,7 @@ class RelationshipCircle:
                         break
                 else:
                     break
-        print(self.listOfNames)
+        # print(self.listOfNames)
 
     def addToBarkada(self):
         for name in self.listOfNames:
@@ -78,6 +81,25 @@ for n in range(numberOfNames):
     name = input().split()
     name[1] = int(name[1])
     names.append(name)
+namesCopy = copy.deepcopy(names)
+
+
+def findExtraFriend(centerScore: list, listOfNames: list):
+    relCircle2 = RelationshipCircle(listOfNames, centerScore[1], barkadaSize)
+    relCircle2.addDistance()
+    relCircle2.sortByDistance()
+    relCircle2.sortByScore()
+    relCircle2.sortByName()
+    relCircle2.addToBarkada()
+    namesInBarkada = [x[0] for x in relCircle1.barkada]
+    if relCircle2.barkada[1][2] == relCircle1.barkada[0][2]:
+        if relCircle2.barkada[1][0] in namesInBarkada:
+            print(centerScore[0])
+        else:
+            print("{}, {}".format(centerScore[0], relCircle2.barkada[1][0]))
+    else:
+        print("{}, {}".format(centerScore[0], "almost"))
+
 
 relCircle1 = RelationshipCircle(names, score, barkadaSize)
 relCircle1.addDistance()
@@ -87,6 +109,7 @@ relCircle1.sortByName()
 relCircle1.addToBarkada()
 
 
-extra = relCircle1.listOfNames[barkadaSize]
 for i in relCircle1.barkada:
     print(i[0])
+extraFriend = relCircle1.listOfNames[barkadaSize]
+findExtraFriend(extraFriend, namesCopy)
