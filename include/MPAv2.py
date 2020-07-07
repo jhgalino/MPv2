@@ -53,7 +53,7 @@ class RelationshipCircle:
                         previous = self.listOfNames[position - 1]
                     except Exception:
                         break
-                elif current[0] > previous[0]:
+                elif current[0].lower() > previous[0].lower():
                     tempHolder = current
                     self.listOfNames.pop(position)
                     self.listOfNames.insert(position - 1, tempHolder)

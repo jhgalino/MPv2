@@ -1,4 +1,4 @@
-def top_and_bottom(li: list, n: int):
+def top_and_bottom(li, n):
     newDeck = []
     if len(li) == 0:
         return []
