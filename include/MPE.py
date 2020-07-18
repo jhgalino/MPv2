@@ -69,7 +69,7 @@ def differentiate(fxn: str):
         diff.pop()
         diff = "".join(diff)
 
-    return diff
+    return "'{}'".format(diff)
 
 
 print(differentiate("971(x)^6"))

@@ -1,16 +1,15 @@
-def findTroll(stack: list):
-    if len(stack) == 0 or noMoreTrolls(stack):
-        return "Goodbye trolls!"
+def insertBacks(stackToScan: list, leastFriends: list):
+    index = stackToScan.index(leastFriends)
+    for n in range(index):
+        leastFriends.insert(0, "<")
+    return leastFriends
+
+
+def findLeastScore(listToSearch: list):
+    if len(listToSearch) > 0 and noMoreTrolls(listToSearch) is False:
+        return min(listToSearch, key=lambda x: x[-1])
     else:
-        backs = -1
-        possibleTroll = stack[0]
-        for element in stack:
-            backs += 1
-            if element[-1] < possibleTroll[-1]:
-                possibleTroll = element
-                for n in range(backs):
-                    possibleTroll.insert(0, "<")
-        return possibleTroll
+        return "Goodbye trolls!"
 
 
 def noMoreTrolls(stackToScan: list):
@@ -36,13 +35,13 @@ for n in range(numberOfInputs):
 
 for command in commandQueue:
     if "report" in command:
-        troll = findTroll(executionStack)
-        if type(troll) != str:
-            executionStack = deleteFromStack(troll, executionStack)
-        if type(troll) != str:
-            print(" ".join(troll[:-1]))
-        else:
+        troll = findLeastScore(executionStack)
+        if type(troll) == str:
             print(troll)
+        else:
+            troll = insertBacks(executionStack, troll)
+            print(" ".join(troll[:-1]))
+            executionStack = deleteFromStack(troll, executionStack)
     else:
         command[1] = int(command[1])
         executionStack.insert(0, command)
