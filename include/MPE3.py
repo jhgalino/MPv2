@@ -1,23 +1,51 @@
 def differentiate(fxn: str) -> str:
-    dividedFxn = getFirstLevel(fxn)
-    coeffOrTrig = dividedFxn[0]
-    exponent = dividedFxn[2]
-    insideParentheses = dividedFxn[1]
-    if insideParentheses == "x":
+    if fxn == "x":
         return "1"
-    else:
-        assert type(coeffOrTrig) == str
-        assert type(exponent) == str
-        assert type(insideParentheses) == str
-        if coeffOrTrig.isalpha():
-            ans = computeTrig(coeffOrTrig, insideParentheses)
+    dividedFxn = getFirstLevel(fxn)
+    coeffOrTrig: str = dividedFxn[0]
+    exponent: str = dividedFxn[2]
+    insideParentheses: str = dividedFxn[1]
+
+    if coeffOrTrig.isalpha():
+        ans = computeTrig(coeffOrTrig, insideParentheses)
+        ans = ans + "*" + differentiate(insideParentheses)
+        if ans.endswith("*1"):
+            ans = list(ans)
+            ans.pop()
+            ans.pop()
+            ans = "".join(ans)
+        return ans
+    if len(exponent) != 0:
+        if len(coeffOrTrig) != 0 and coeffOrTrig.isnumeric():
+            ans = computeExpWithCoeff(coeffOrTrig, insideParentheses, exponent)
             ans = ans + "*" + differentiate(insideParentheses)
-            ans = ans.replace("1", "")
-            if ans[-1] == "*":
-                ans[-1] = ""
+            ans = ans.replace("^1", "")
+            if ans.endswith("*1"):
+                ans = list(ans)
+                ans.pop()
+                ans.pop()
+                ans = "".join(ans)
             return ans
-        elif coeffOrTrig.isnumeric():
-            
+        else:
+            ans = computeExpWithoutCoeff(insideParentheses, exponent)
+            ans = ans + "*" + differentiate(insideParentheses)
+            ans = ans.replace("^1", "")
+            if ans.endswith("*1"):
+                ans = list(ans)
+                ans.pop()
+                ans.pop()
+                ans = "".join(ans)
+            return ans
+
+    if len(coeffOrTrig) == 0 and len(exponent) == 0:
+        ans = "1" + "*" + differentiate(insideParentheses)
+        ans = ans.replace("^1", "")
+        if ans.endswith("*1"):
+            ans = list(ans)
+            ans.pop()
+            ans.pop()
+            ans = "".join(ans)
+        return ans
 
 
 def getFirstLevel(function: str) -> list:
@@ -44,3 +72,28 @@ def computeTrig(trig: str, inside: str) -> str:
         return "(-csc({})cot({}))".format(inside, inside)
     if trig == "cot":
         return "(-csc({})^2)".format(inside)
+
+
+def computeExpWithCoeff(coeff: str, inside: str, exp: str) -> str:
+    cf = int(coeff)
+    expnt = int(exp.replace("^", ""))
+    cf = cf * expnt
+    expnt -= 1
+    return "{}({})^{}".format(cf, inside, expnt)
+
+
+def computeExpWithoutCoeff(inside: str, exp: str) -> str:
+    expnt = int(exp.replace("^", ""))
+    cf = int(exp.replace("^", ""))
+    expnt -= 1
+    return "{}({})^{}".format(cf, inside, expnt)
+
+
+OTHER_RECURSIVE_FUNCTIONS = [
+    "getFirstLevel",
+    "computeTrig",
+    "computeExpWithCoeff",
+    "computeExpWithoutCoeff",
+]
+
+print(differentiate("(x)"))
