@@ -96,4 +96,4 @@ OTHER_RECURSIVE_FUNCTIONS = [
     "computeExpWithoutCoeff",
 ]
 
-print(differentiate("(x)"))
+print(differentiate("3(x)^3"))
