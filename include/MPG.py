@@ -1,12 +1,7 @@
 numberOfID = int(input())
 ids = list(map(int, input().split()))
 highestValue = 0
-arrayOfSubArray = [
-    tuple(ids[i : i + j])
-    for i in range(numberOfID - 1)
-    for j in range(2, numberOfID + 1)
-]
-setOfSubArray = list(map(list, set(arrayOfSubArray)))
+arrayOfSubArray = [ids[i : i + 2] for i in range(numberOfID - 1)]
 
 for x in arrayOfSubArray:
     first = x[0]
